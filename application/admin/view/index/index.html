@@ -22,15 +22,19 @@
             <!-- 左侧导航区域 -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item"><a href="javascript:;" onclick="openapp('/admin/Index/center')">首页</a></li>
-                <li class="layui-nav-item"><a href="javascript:;" onclick="openapp('/admin/Survey/index')">调查问卷管理</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">调查问卷管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="openapp('/admin/Survey/index')">调查问卷列表</a></dd>
+                        <dd><a href="javascript:;" onclick="openapp('/admin/Survey/add')">新建调查问卷</a></dd>
+                    </dl>
+                </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">基础信息管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" onclick="openapp('/admin/OptionType/index')">问卷题型管理</a></dd>
-                        <dd><a href="javascript:;" onclick="openapp('/admin/Classes/index')">问卷选项管理</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;" onclick="openapp('/admin/User/index')">用户管理</a></li>
                 <li class="layui-nav-item"><a href="javascript:;" onclick="openapp('/admin/Index/changePassword')">修改密码</a></li>
             </ul>
         </div>
