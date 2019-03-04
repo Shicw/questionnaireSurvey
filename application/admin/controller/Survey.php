@@ -95,4 +95,10 @@ class Survey extends Controller
             $this->error($result['msg']);
         }
     }
+    /**
+     * 创建问卷页面
+     */
+    public function add(){
+        return $this->fetch();
+    }
 }
