@@ -99,6 +99,27 @@ class Survey extends Controller
      * 创建问卷页面
      */
     public function add(){
+        $questionType = Db::name('question_type')->where('delete_time',0)->select();
+        $this->assign('question_type',$questionType);
+        $this->assign('question_type_str',json_encode($questionType));
         return $this->fetch();
     }
+
+    /**
+     * 创建问卷提交
+     */
+    public function addPost(){
+        if(!$this->request->isPost()){
+            $this->error('请求失败');
+        }
+        $data = $this->request->post()['data'];
+        $model = new QuestionnaireModel();
+        $result = $model->addQuestionnaire($data);
+        if($result['code']===1){
+            $this->success($result['msg']);
+        }else{
+            $this->error($result['msg']);
+        }
+    }
+    
 }

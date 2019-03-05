@@ -1,7 +1,7 @@
 {include file="public/head" /}
 </head>
-<body class="layui-layout-body">
-<div class="layui-layout layui-layout-admin">
+<body>
+<div class="layui-layout">
     <div class="layui-row">
         <div class="layui-tab">
             <ul class="layui-tab-title">
@@ -11,51 +11,228 @@
     </div>
     <div class="layui-col-md11">
         <form class="layui-form" action="">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>问卷标题</legend>
+            </fieldset>
             <div class="layui-form-item">
-                <label class="layui-form-label">问卷名称:</label>
+                <label class="layui-form-label">标题:</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" lay-verify="required" autocomplete="off"
+                    <input type="text" name="title" autocomplete="off"
                            placeholder="请输入标题" class="layui-input">
                 </div>
             </div>
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-                <legend>题目1</legend>
-            </fieldset>
-            <div class="layui-form-item">
-                <label class="layui-form-label">Q1:</label>
-                <div class="layui-input-block">
-                    <input type="text" name="title" required  lay-verify="required" autocomplete="off"
-                           placeholder="请输入题目" class="layui-input">
+            <div id="q1">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>题目1</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">题目类型:</label>
+                        <div class="layui-input-block">
+                            {volist name="$question_type" id="vo"}
+                            <input type="radio" name="q-1-type" value="{$vo.id}" title="{$vo.name}">
+                            {/volist}
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">短输入框</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Q1:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="q-1-content" autocomplete="off"
+                               placeholder="请输入题目" class="layui-input">
+                    </div>
                 </div>
+                <div class="layui-form-item layui-col-md-offset1 o1">
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-1-o-1-type" placeholder="选项类型(A,B,C,D...)" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-1-o-1-content" placeholder="选项内容" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 o2">
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-1-o-2-type" placeholder="选项类型(A,B,C,D...)" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-1-o-2-content" placeholder="选项内容" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <a class="layui-btn" onclick="addOption(this)">增加选项</a>
+                <a class="layui-btn" onclick="delOption(this)">删除选项</a>
             </div>
+            <div id="q2">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>题目2</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">题目类型:</label>
+                        <div class="layui-input-block">
+                            {volist name="$question_type" id="vo"}
+                            <input type="radio" name="q-2-type" value="{$vo.id}" title="{$vo.name}">
+                            {/volist}
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Q2:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="q-2-content" autocomplete="off"
+                               placeholder="请输入题目" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 o1">
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-2-o-1-type" placeholder="选项类型(A,B,C,D...)" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-2-o-1-content" placeholder="选项内容" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-col-md-offset1 o2">
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-2-o-2-type" placeholder="选项类型(A,B,C,D...)" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" name="q-2-o-2-content" placeholder="选项内容" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <a class="layui-btn" onclick="addOption(this)">增加选项</a>
+                <a class="layui-btn" onclick="delOption(this)">删除选项</a>
+            </div>
+            <hr>
+            <a class="layui-btn layui-btn-danger" id="addQuestion">增加题目</a>
+            <a class="layui-btn layui-btn-danger" id="delQuestion">删除题目</a>
             <a class="layui-btn" lay-submit="" lay-filter="post">提交</a>
         </form>
     </div>
 </div>
 </body>
 <script>
+    var questionType = {$question_type_str};
+    var questionCount = 2;//当前题目数量
+    var optionCount = {q1:2,q2:2,q3:2};//当前各题的选项数量
     layui.use('form', function () {
         var form = layui.form, layer = layui.layer;
         //表单提交
         form.on('submit(post)', function (data) {
+            console.log(data.field);
             $.post("{:url('admin/survey/addPost')}", {data: data.field}, function (res) {
                 if (res.code == 0) {
                     layer.msg(res.msg, {time: 2000, icon: 5});
                 } else {
                     layer.msg(res.msg, {time: 1500, icon: 6});
-                    $("input").val('');
+                    window.location.href = '/admin/survey/index';
                 }
             }, "json");
         });
+        //增加题目
+        $("#addQuestion").on('click',function(e){
+            questionCount += 1;//题目数量+1
+            optionCount[questionCount] = 2;//将当前题目的选项数量加入到optionCount中
+            //拼接题目类型option的html字符串
+            var questionTypeStr = "";
+            for(var i=0;i<questionType.length;i++){
+                questionTypeStr += "<input type=\"radio\" name=\"q-"+questionCount+"-type\" value=\""+questionType[i].id+"\" " +
+                    "title=\""+questionType[i].name+"\">\n";
+            }
+            //debugger
+            //拼接题目的html字符串
+            var questionStr = "<div id=\"q"+questionCount+"\">\n" +
+                "                <fieldset class=\"layui-elem-field layui-field-title\">\n" +
+                "                    <legend>题目"+questionCount+"</legend>\n" +
+                "                </fieldset>\n" +
+                "                <div class=\"layui-form-item\">\n" +
+                "                    <div class=\"layui-inline\">\n" +
+                "                        <label class=\"layui-form-label\">题目类型:</label>\n" +
+                "                        <div class=\"layui-input-block\">\n" +
+                    questionTypeStr+
+                "                        </div>"+
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"layui-form-item\">\n" +
+                "                    <label class=\"layui-form-label\">Q"+questionCount+":</label>\n" +
+                "                    <div class=\"layui-input-block\">\n" +
+                "                        <input type=\"text\" name=\"q-"+questionCount+"-content\" autocomplete=\"off\"\n" +
+                "                               placeholder=\"请输入题目\" class=\"layui-input\">\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"layui-form-item layui-col-md-offset1 o1\">\n" +
+                "                    <div class=\"layui-input-inline\">\n" +
+                "                        <input type=\"text\" name=\"q-"+questionCount+"-o-1-type\" placeholder=\"选项类型(A,B,C,D...)\" autocomplete=\"off\"\n" +
+                "                               class=\"layui-input\">\n" +
+                "                    </div>\n" +
+                "                    <div class=\"layui-input-inline\">\n" +
+                "                        <input type=\"text\" name=\"q-"+questionCount+"-o-1-content\" placeholder=\"选项内容\" autocomplete=\"off\"\n" +
+                "                               class=\"layui-input\">\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <div class=\"layui-form-item layui-col-md-offset1 o2\">\n" +
+                "                    <div class=\"layui-input-inline\">\n" +
+                "                        <input type=\"text\" name=\"q-"+questionCount+"-o-2-type\" placeholder=\"选项类型(A,B,C,D...)\" autocomplete=\"off\"\n" +
+                "                               class=\"layui-input\">\n" +
+                "                    </div>\n" +
+                "                    <div class=\"layui-input-inline\">\n" +
+                "                        <input type=\"text\" name=\"q-"+questionCount+"-o-2-content\" placeholder=\"选项内容\" autocomplete=\"off\"\n" +
+                "                               class=\"layui-input\">\n" +
+                "                    </div>\n" +
+                "                </div>\n" +
+                "                <a class=\"layui-btn\" onclick=\"addOption(this)\">增加选项</a>\n" +
+                "                <a class=\"layui-btn\" onclick=\"delOption(this)\">删除选项</a>\n" +
+                "            </div>";
+            $("hr").before(questionStr);
+            form.render();
+        });
+        //删除题目
+        $("#delQuestion").on('click',function(e){
+            $("#q"+questionCount).remove();
+            questionCount -= 1;
+        });
 
     });
+    //增加选项
+    function addOption(self){
+        //获取当前点击的题目索引
+        var thisQuestion = $(self).parent().attr('id');
+        var thisQuestionIndex = thisQuestion.split('q')[1];
+        //获取当前点击的题目的选项数量
+        var thisQuestionOptionCount = optionCount[thisQuestion];
+        //console.log(thisQuestionOptionCount);
+        var optionStr = "<div class=\"layui-form-item layui-col-md-offset1 o"+(thisQuestionOptionCount+1)+"\">\n" +
+            "                    <div class=\"layui-input-inline\">\n" +
+            "                        <input type=\"text\" name=\"q-"+thisQuestionIndex+"-o-"+(thisQuestionOptionCount+1)+"-type\" placeholder=\"选项类型(A,B,C,D...)\" autocomplete=\"off\"\n" +
+            "                               class=\"layui-input\">\n" +
+            "                    </div>\n" +
+            "                    <div class=\"layui-input-inline\">\n" +
+            "                        <input type=\"text\" name=\"q-"+thisQuestionIndex+"-o-"+(thisQuestionOptionCount+1)+"-content\" placeholder=\"选项内容\" autocomplete=\"off\"\n" +
+            "                               class=\"layui-input\">\n" +
+            "                    </div>\n" +
+            "                </div>";
+        $(self).before(optionStr);
+        optionCount[thisQuestion] +=1;//题目选项数量+1
+
+    };
+    //删除选项
+    function delOption(self){
+        //获取当前点击的题目索引
+        var thisQuestion = $(self).parent().attr('id');
+        console.log(thisQuestion);
+        //var thisQuestionIndex = thisQuestion.split('q')[1];
+        //获取当前点击的题目的选项数量
+        var thisQuestionOptionCount = optionCount[thisQuestion];
+        $("#"+thisQuestion).find(".o"+thisQuestionOptionCount).remove();
+        optionCount[thisQuestion] -=1;
+
+    }
 </script>
 </body>
 </html>
