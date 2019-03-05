@@ -1,0 +1,56 @@
+{include file="public/head" /}
+<style>
+    body{background-color: #F7F8FA;}
+    .answer_area{background-color: #fff;padding: 30px 30px}
+    .answer_area .title{font-size: 20px;color: #484848;text-align: center;margin-bottom: 30px;}
+    .question_content{line-height: 1.5 !important;font-size: 14px;margin-bottom: 10px}
+    .layui-input-block{margin-left: 0;}
+</style>
+</head>
+<body>
+<div class="layui-container">
+    <div class="answer_area layui-row">
+        <p class="title">{$questionnaire.title}</p>
+        <hr>
+        <form class="layui-form" action="">
+            <div class="question_area">
+                {volist name="$questions" id="vo" key="k"}
+                <p class="question_content">Q{$k}:{$vo.content} [{$vo.type}]</p>
+                {eq name="$vo.question_type" value="1"}
+                <!--单选题-->
+                <div class="layui-form-item option">
+                    <div class="layui-input-block">
+                        {foreach name="$vo.option" item="vo"}
+                        <input type="radio" name="q-{$k}-answer" value="{$vo.id}">{$vo.option_index}:{$vo.content}
+                        {/foreach}
+                    </div>
+                </div>
+                {else/}
+                <!--多选题-->
+                {foreach name="$vo.option" item="vo"}
+
+                {/foreach}
+                {/eq}
+                {/volist}
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    layui.use('form', function () {
+        var form = layui.form, layer = layui.layer;
+        //表单提交
+        form.on('submit(post)', function (data) {
+            $.post("{:url('admin/survey/addPost')}", {data: data.field}, function (res) {
+                if (res.code == 0) {
+                    layer.msg(res.msg, {time: 2000, icon: 5});
+                } else {
+                    layer.msg(res.msg, {time: 1500, icon: 6});
+                    window.location.href = '/admin/survey/index';
+                }
+            }, "json");
+        });
+    });
+</script>
+</html>

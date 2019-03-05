@@ -121,5 +121,10 @@ class Survey extends Controller
             $this->error($result['msg']);
         }
     }
-    
+    /**
+     * 查看问卷详情
+     */
+    public function detail(){
+        $id = $this->request->param('id');
+    }
 }
