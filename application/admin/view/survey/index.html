@@ -25,6 +25,7 @@
     </div>
 </div>
 <script>
+    var domain = '{$domain}';
     layui.use(['element','table','form'], function(){
         var table = layui.table,layer = layui.layer;
         var form = layui.form;
@@ -35,8 +36,8 @@
             ,url: '/admin/Survey/getList'
             ,page: true
             ,cols: [[
-                {field: 'id', title: '问卷ID', sort: true, fixed: 'left', width:90}
-                ,{field: 'title', title: '问卷名称', width:250}
+                {field: 'id', title: 'ID', sort: true, fixed: 'left', width:40}
+                ,{field: 'title', title: '问卷名称', width:180}
                 ,{field: 'answer_count', title: '已作答份数', width:100}
                 ,{field: 'status', title: '状态', width:80, templet: function(d){
                     return d.status==0 ? '已结束' : '进行中';
@@ -45,7 +46,10 @@
                 ,{field: 'end_time', title: '结束时间', width:170, templet: function(d){
                     return d.status==0 ? d.end_time : '';
                 }}
-                ,{title:'操作', toolbar: '#operation', width:200}
+                ,{title: '问卷链接', width:170, templet: function(d){
+                    return domain+'/user/index/index/id/'+d.id;
+                }}
+                ,{title:'操作', toolbar: '#operation', width:220}
             ]]
         });
         //监听表格操作按钮
@@ -94,6 +98,10 @@
                     area: ['90%', '90%'],
                     content: "/admin/survey/detail/id/"+id
                 });
+            }else if(obj.event === 'copyUrl'){
+                oInput.select(); // 选择对象
+                document.execCommand("Copy"); // 执行浏览器复制命令
+                window.clipboardData.setData("Text",domain+'/user/index/index/id/'+id);
             }
         });
 

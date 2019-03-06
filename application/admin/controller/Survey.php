@@ -17,6 +17,8 @@ class Survey extends Controller
      * @return mixed
      */
     public function index(){
+        $domain = $this->request->domain();
+        $this->assign('domain',$domain);
         return $this->fetch();
     }
 

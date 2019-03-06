@@ -14,6 +14,9 @@ class Index extends Controller
         $id = $this->request->param('id');
         //获取问卷信息
         $questionnaire = Db::name('questionnaire')->where('id',$id)->find();
+        if($questionnaire['status']==0){
+            $this->error('该问卷已结束');
+        }
         //获取题目信息
         $questions = Db::name('question q')
             ->field(['q.id','q.questionnaire_id','q.content','q.question_type','qt.name type'])
