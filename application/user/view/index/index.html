@@ -16,15 +16,15 @@
         <hr>
         <form class="layui-form" action="">
             <div class="question_area">
-                {volist name="$questions" id="vo" key="k"}
-                <p class="question_content">Q{$k}:{$vo.content} [{$vo.type}]</p>
-                {eq name="$vo.question_type" value="1"}
+                {volist name="$questions" id="op" key="k"}
+                <p class="question_content">Q{$k}:{$op.content} [{$op.type}]</p>
+                {eq name="$op.question_type" value="1"}
                 <!--单选题-->
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <div class="layui-input-block">
-                            {foreach name="$vo.option" item="vo"}
-                            <input type="radio" name="q-{$k}-answer" value="{$vo.option_index}">{$vo.option_index}:{$vo.content}
+                            {foreach name="$op.option" item="vo"}
+                            <input type="radio" name="q-{$op.id}-answer" value="{$vo.option_index}">{$vo.option_index}:{$vo.content}
                             {/foreach}
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                 <!--多选题-->
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        {foreach name="$vo.option" item="vo"}
-                        <input type="checkbox" name="q-{$k}-answer[]" value="{$vo.option_index}" lay-skin="primary">{$vo.option_index}:{$vo.content}
+                        {foreach name="$op.option" item="vo"}
+                        <input type="checkbox" name="q-{$op.id}-answer[]" value="{$vo.option_index}" lay-skin="primary">{$vo.option_index}:{$vo.content}
                         {/foreach}
                     </div>
                 </div>
@@ -57,7 +57,6 @@
                     layer.msg(res.msg, {time: 2000, icon: 5});
                 } else {
                     layer.msg(res.msg, {time: 1500, icon: 6});
-                    window.location.href = '/admin/survey/index';
                 }
             }, "json");
         });

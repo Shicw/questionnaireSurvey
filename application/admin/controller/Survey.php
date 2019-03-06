@@ -126,5 +126,36 @@ class Survey extends Controller
      */
     public function detail(){
         $id = $this->request->param('id');
+        //获取问卷信息
+        $questionnaire = Db::name('questionnaire')->where('id',$id)->find();
+        //获取题目信息
+        $questions = Db::name('question q')
+            ->field(['q.id','q.questionnaire_id','q.content','q.question_type','qt.name type'])
+            ->join('question_type qt','qt.id=q.question_type')
+            ->where(['q.questionnaire_id'=>$id,'q.delete_time'=>0])
+            ->select();
+
+        foreach ($questions as $key1 => $q){
+            //获取选项信息
+            $options = Db::name('option')
+                ->field(['id','question_id','option_index','content'])
+                ->where(['question_id'=>$q['id'],'delete_time'=>0])
+                ->select();
+            $questions[$key1]['option'] = $options;
+
+            foreach ($options as $key2 => $o){
+                //获取各选项选择数量
+                $answerCount = Db::name('answer')
+                    ->where(['questionnaire_id'=>$id,'question_id'=>$q['id'],'option_index'=>$o['option_index']])
+                    ->count();
+                $questions[$key1]['option'][$key2]['answer_count'] = $answerCount;
+                //计算各选项的选择比例
+                $percent = round($answerCount / $questionnaire['answer_count'],2) * 100;
+                $questions[$key1]['option'][$key2]['answer_percent'] = $percent;
+            }
+        }
+
+        $this->assign(['questionnaire'=>$questionnaire,'questions'=>$questions]);
+        return $this->fetch();
     }
 }

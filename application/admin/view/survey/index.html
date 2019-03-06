@@ -86,7 +86,14 @@
                 });
             }else if(obj.event === 'detail'){
                 //查看详情
-                window.location.href = "/admin/survey/detail/id/"+id;
+                layer.open({
+                    type: 2,
+                    title: '问卷详情',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['90%', '90%'],
+                    content: "/admin/survey/detail/id/"+id
+                });
             }
         });
 

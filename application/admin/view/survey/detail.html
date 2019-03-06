@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{include file="public/head" /}
+<style>
+    body{background-color: #F7F8FA;}
+    .answer_area{background-color: #fff;padding: 30px 30px}
+    .answer_area .title{font-size: 20px;color: #484848;text-align: center;margin-bottom: 30px;}
+    .question_content{line-height: 1.5 !important;font-size: 14px;margin-bottom: 10px}
+    .layui-input-block{margin-left: 0;}
+</style>
 </head>
 <body>
-
+<div class="layui-container">
+    <div class="answer_area layui-row">
+        <p class="title">{$questionnaire.title}[共作答:{$questionnaire.answer_count}份]</p>
+        <hr>
+        <form class="layui-form" action="">
+            <div class="question_area">
+                {volist name="$questions" id="op" key="k"}
+                <p class="question_content">Q{$k}:{$op.content} [{$op.type}]</p>
+                {eq name="$op.question_type" value="1"}
+                <!--单选题-->
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-block">
+                            {foreach name="$op.option" item="vo"}
+                            <input type="radio" name="q-{$k}-answer" value="{$vo.option_index}">
+                            {$vo.option_index}:{$vo.content}[选择人数:{$vo.answer_count}][选择比例:{$vo.answer_percent}%]<br>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+                {else/}
+                <!--多选题-->
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        {foreach name="$op.option" item="vo"}
+                        <input type="checkbox" name="q-{$k}-answer[]" value="{$vo.option_index}" lay-skin="primary">
+                        {$vo.option_index}:{$vo.content}[选择人数:{$vo.answer_count}][选择比例:{$vo.answer_percent}%]<br>
+                        {/foreach}
+                    </div>
+                </div>
+                {/eq}
+                {/volist}
+            </div>
+        </form>
+    </div>
+</div>
 </body>
+<script>
+</script>
 </html>
