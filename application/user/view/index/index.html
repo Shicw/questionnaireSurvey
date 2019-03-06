@@ -5,6 +5,8 @@
     .answer_area .title{font-size: 20px;color: #484848;text-align: center;margin-bottom: 30px;}
     .question_content{line-height: 1.5 !important;font-size: 14px;margin-bottom: 10px}
     .layui-input-block{margin-left: 0;}
+    .layui-form-radio{margin: 0;padding-right: 0;}
+    .layui-form-checkbox{margin-top: 0 !important}
 </style>
 </head>
 <body>
@@ -18,31 +20,39 @@
                 <p class="question_content">Q{$k}:{$vo.content} [{$vo.type}]</p>
                 {eq name="$vo.question_type" value="1"}
                 <!--单选题-->
-                <div class="layui-form-item option">
-                    <div class="layui-input-block">
-                        {foreach name="$vo.option" item="vo"}
-                        <input type="radio" name="q-{$k}-answer" value="{$vo.id}">{$vo.option_index}:{$vo.content}
-                        {/foreach}
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-block">
+                            {foreach name="$vo.option" item="vo"}
+                            <input type="radio" name="q-{$k}-answer" value="{$vo.option_index}">{$vo.option_index}:{$vo.content}
+                            {/foreach}
+                        </div>
                     </div>
                 </div>
                 {else/}
                 <!--多选题-->
-                {foreach name="$vo.option" item="vo"}
-
-                {/foreach}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        {foreach name="$vo.option" item="vo"}
+                        <input type="checkbox" name="q-{$k}-answer[]" value="{$vo.option_index}" lay-skin="primary">{$vo.option_index}:{$vo.content}
+                        {/foreach}
+                    </div>
+                </div>
                 {/eq}
                 {/volist}
             </div>
+            <a class="layui-btn" lay-submit="" lay-filter="post">提交</a>
         </form>
     </div>
 </div>
 </body>
 <script>
+    var questionnaireId = {$questionnaire.id};
     layui.use('form', function () {
         var form = layui.form, layer = layui.layer;
         //表单提交
         form.on('submit(post)', function (data) {
-            $.post("{:url('admin/survey/addPost')}", {data: data.field}, function (res) {
+            $.post("{:url('user/index/post')}", {data: data.field,questionnaireId:questionnaireId}, function (res) {
                 if (res.code == 0) {
                     layer.msg(res.msg, {time: 2000, icon: 5});
                 } else {
