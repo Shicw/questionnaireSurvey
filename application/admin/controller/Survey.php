@@ -152,7 +152,11 @@ class Survey extends Controller
                     ->count();
                 $questions[$key1]['option'][$key2]['answer_count'] = $answerCount;
                 //计算各选项的选择比例
-                $percent = round($answerCount / $questionnaire['answer_count'],2) * 100;
+                if($questionnaire['answer_count']===0){
+                    $percent = 0;
+                }else{
+                    $percent = round($answerCount / $questionnaire['answer_count'],2) * 100;
+                }
                 $questions[$key1]['option'][$key2]['answer_percent'] = $percent;
             }
         }
