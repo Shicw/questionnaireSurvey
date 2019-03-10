@@ -120,7 +120,7 @@
 <script>
     var questionType = {$question_type_str};
     var questionCount = 2;//当前题目数量
-    var optionCount = {q1:2,q2:2,q3:2};//当前各题的选项数量
+    var optionCount = {q1:2,q2:2};//当前各题的选项数量
     layui.use('form', function () {
         var form = layui.form, layer = layui.layer;
         //表单提交
@@ -138,7 +138,7 @@
         //增加题目
         $("#addQuestion").on('click',function(e){
             questionCount += 1;//题目数量+1
-            optionCount[questionCount] = 2;//将当前题目的选项数量加入到optionCount中
+            optionCount['q'+questionCount] = 2;//将当前题目的选项数量加入到optionCount中
             //拼接题目类型option的html字符串
             var questionTypeStr = "";
             for(var i=0;i<questionType.length;i++){
